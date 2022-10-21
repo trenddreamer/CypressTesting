@@ -99,7 +99,7 @@ function Item({
         {isReleased ? '✅' : '👍'}
       </button>
       <h3 className="text font-semibold w-full text-left">{feature.title}</h3>
-      <div className="bg-gray-200 text-gray-700 text-sm rounded-xl px-2 ml-2">
+      <div cy-data =  {feature.title} className="bg-gray-200 text-gray-700 text-sm rounded-xl px-2 ml-2">
         {feature.score}
       </div>
     </div>
@@ -202,7 +202,7 @@ export default function Roadmap({
 
         <div className="flex flex-wrap items-center justify-around max-w-4xl my-8 sm:w-full bg-white rounded-md shadow-xl h-full border border-gray-100">
           <div className="mx-8 w-full">
-            <form className="relative my-8" onSubmit={addFeature}>
+            <form cy-data='requestForm' className="relative my-8" onSubmit={addFeature}>
               <input
                 cy-data='requestInput'
                 ref={featureInputRef}
@@ -244,6 +244,7 @@ export default function Roadmap({
             </p>
             <form className="relative my-4" onSubmit={subscribe}>
               <input
+              cy-data = "subscribeInput"
                 ref={subscribeInputRef}
                 aria-label="Email for updates"
                 placeholder="Email Address"
@@ -254,6 +255,7 @@ export default function Roadmap({
                 className="px-3 py-3 mt-1 text-lg block w-full border border-gray-200 rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-300"
               />
               <button
+              cy-data = "subscribeButton"
                 className="flex items-center justify-center absolute right-2 top-2 px-4 h-10 border border-gray-200 text-gray-900 rounded-md w-14 focus:outline-none focus:ring focus:ring-blue-300 focus:bg-gray-100"
                 type="submit"
               >

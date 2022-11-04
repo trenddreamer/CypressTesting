@@ -88,6 +88,7 @@ function Item({
       )}
     >
       <button
+      cy-data={feature.ip}
         className={clsx(
           'ring-1 ring-gray-200 rounded-full w-8 min-w-[2rem] h-8 mr-4 focus:outline-none focus:ring focus:ring-blue-300',
           (isReleased || hasVoted) &&

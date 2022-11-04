@@ -63,20 +63,24 @@ describe('when adding request', () => {
   })
 
   describe.only('Voting', ()=>{
-    it('should be able to vote on a different IP', ()=>{
-      cy.request({
+    
+    it('should be able to vote on a different IP', async ()=>{
+      cy.request({ 
         method: 'POST',
-        url: '/api/create',
-        body: { "title": "Request on new IP"} ,
-        headers: {'x-forwarded-for': '192.168.0.5'}
-      }
-    )
-    cy.visit('http://localhost:3000')
-    cy.get('[cy-data = "featuresList"]').contains('Request on new IP')
-    cy.get('[cy-data = "Request on new IP"]').contains('1')
-    cy.get('[cy-data = "192.168.0.5"]')
-    .click();
-    cy.get('[cy-data = "Request on new IP"]').contains('2')
+         url: '/api/create',
+         body: { "title": `New feature`} ,
+          headers: {'x-forwarded-for': '192.168.0.5'}
+        }
+      )
+      cy.request('http://localhost:3000/api/features').then((response) => {  
+        expect(response.status).to.eq(200)  
+        const feature = response.body.features[response.body.features.length -1]
+        console.log(`=========>>>`,feature.id);
+        cy.visit('http://localhost:3000')
+        cy.get(`[cy-data = "${feature.id}"]`).contains('1')
+        // .click();
+        // cy.get(`[cy-data = "${feature.id}"]`).contains('2')
+      })
     })
 
   })

@@ -88,7 +88,7 @@ function Item({
       )}
     >
       <button
-      cy-data={feature.id}
+      cy-data={`vote_${feature.id}`}
         className={clsx(
           'ring-1 ring-gray-200 rounded-full w-8 min-w-[2rem] h-8 mr-4 focus:outline-none focus:ring focus:ring-blue-300',
           (isReleased || hasVoted) &&
@@ -100,7 +100,7 @@ function Item({
         {isReleased ? '✅' : '👍'}
       </button>
       <h3 className="text font-semibold w-full text-left">{feature.title}</h3>
-      <div cy-data =  {feature.title} className="bg-gray-200 text-gray-700 text-sm rounded-xl px-2 ml-2">
+      <div cy-data={`score_${feature.id}`} className="bg-gray-200 text-gray-700 text-sm rounded-xl px-2 ml-2">
         {feature.score}
       </div>
     </div>

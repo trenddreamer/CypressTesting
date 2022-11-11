@@ -64,23 +64,46 @@ describe('when adding request', () => {
 
   describe.only('Voting', ()=>{
     
-    it('should be able to vote on a different IP', async ()=>{
+    it('should be able to vote on a request created by someone else',()=>{
       cy.request({ 
         method: 'POST',
          url: '/api/create',
-         body: { "title": `New feature`} ,
+         body: { "title": `Remotely created feature`} ,
           headers: {'x-forwarded-for': '192.168.0.5'}
         }
       )
       cy.request('http://localhost:3000/api/features').then((response) => {  
         expect(response.status).to.eq(200)  
         const feature = response.body.features[response.body.features.length -1]
-        console.log(`=========>>>`,feature.id);
         cy.visit('http://localhost:3000')
-        cy.get(`[cy-data = "${feature.id}"]`).contains('1')
-        // .click();
-        // cy.get(`[cy-data = "${feature.id}"]`).contains('2')
+        cy.get(`[cy-data = "score_${feature.id}"]`).contains('1')
+        cy.get(`[cy-data = "vote_${feature.id}"]`).click();
+        cy.get(`[cy-data = "score_${feature.id}"]`).contains('2')
       })
+    })
+    it('should allow someone else to vote on manually created request', ()=>{
+      cy.visit('http://localhost:3000')
+      cy.get('[cy-data = "requestInput"]')
+      .type('Manually created feature');
+      cy.get('[cy-data = "requestButton"]')
+      .click();
+      cy.wait(1000)
+      cy.request('http://localhost:3000/api/features').then((response) => {  
+        expect(response.status).to.eq(200)  
+        const feature = response.body.features[response.body.features.length -1]
+        cy.request({ 
+          method: 'POST',
+           url: '/api/vote',
+           body: { 'title': 'Manually created feature',
+                   'id': feature.id } ,
+            headers: {'x-forwarded-for': '192.168.0.7'}
+          }
+        )
+        cy.visit('http://localhost:3000')
+        cy.wait(1000)
+        cy.get(`[cy-data = "score_${feature.id}"]`).contains('2')
+      })
+
     })
 
   })

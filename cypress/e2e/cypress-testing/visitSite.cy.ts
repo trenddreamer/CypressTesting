@@ -62,7 +62,7 @@ describe('when adding request', () => {
   })
   })
 
-  describe.only('Voting', ()=>{
+  describe('Voting', ()=>{
     
     it('should be able to vote on a request created by someone else',()=>{
       cy.request({ 
@@ -106,4 +106,32 @@ describe('when adding request', () => {
 
     })
 
+  })
+
+  describe.only('Feature released', ()=>{
+    it('should be able to show a feature is released',()=>{
+      cy.request({ 
+        method: 'POST',
+         url: '/api/create',
+         body: { "title": `Released feature`} ,
+          headers: {'x-forwarded-for': '192.168.0.5'}
+        }
+      )
+      cy.wait(1000)
+      cy.request('http://localhost:3000/api/features').then((response) => {  
+        expect(response.status).to.eq(200)  
+        const feature = response.body.features[response.body.features.length -1]
+        cy.visit('http://localhost:3000')
+        cy.request({ 
+          method: 'POST',
+           url: '/api/release',
+           body: { "id": feature.id} ,
+            headers: {'x-forwarded-for': '192.168.0.5'}
+          }
+        )
+        cy.reload()
+        cy.get(`[cy-data = "vote_${feature.id}"]`).contains('✅')
+      })
+
+    })
   })

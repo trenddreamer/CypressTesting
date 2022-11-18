@@ -11,6 +11,7 @@ type Feature = {
   id: string
   title: string
   score: number
+  released: boolean;
   ip: string
 }
 
@@ -231,7 +232,7 @@ export default function Roadmap({
                 key={index}
                 isFirst={index === 0}
                 isLast={index === data.features.length - 1}
-                isReleased={false}
+                isReleased={feature.released}
                 hasVoted={feature.ip === ip}
                 feature={feature}
               />

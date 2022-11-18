@@ -20,6 +20,7 @@ export default async function create(
       title,
       created_at: Date.now(),
       score: 1,
+      released:false,
       ip: req.headers['x-forwarded-for'] || 'NA',
     }
 

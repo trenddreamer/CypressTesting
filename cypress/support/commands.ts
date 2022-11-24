@@ -35,3 +35,28 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add('clearRedis', () => {
+  cy.exec('docker exec -d roadmap-redis redis-cli FLUSHALL', {
+    timeout: 30000,
+    failOnNonZeroExit: false,
+  });
+});
+
+Cypress.Commands.add('vote', (id: string, title: string, ip: string) => {
+    cy.request({
+        method: "POST",
+        url: "/api/vote",
+        body: { title: title, id: id },
+        headers: { "x-forwarded-for": ip },
+      });
+})
+
+Cypress.Commands.add('createFeature', (title: string, ip: string) => {
+    cy.request({
+        method: "POST",
+        url: "/api/create",
+        body: { title: title },
+        headers: { "x-forwarded-for": ip },
+      });
+})

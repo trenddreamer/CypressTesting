@@ -6,6 +6,7 @@ describe("feature ordering", () => {
     cy.createFeature("request 1", "192.168.0.5");
     cy.createFeature("request 2", "192.168.0.5");
     cy.createFeature("request 3", "192.168.0.5");
+
     cy.visit("http://localhost:3000");
   });
 
@@ -20,9 +21,9 @@ describe("feature ordering", () => {
       );
 
       cy.vote(thirdRequest.id, thirdRequest.title, "192.168.0.2");
-      cy.reload();
     });
 
+    cy.reload();
     cy.get('[cy-data = "featuresList"]').children().first().contains('request 3')
   });
 
@@ -38,9 +39,9 @@ describe("feature ordering", () => {
 
       cy.vote(thirdRequest.id, thirdRequest.title, "192.168.0.2");
       cy.vote(thirdRequest.id, thirdRequest.title, "192.168.0.3");
-      cy.reload();
     });
 
+    cy.reload();
     cy.get('[cy-data = "featuresList"]').children().first().contains('request 2')
   })
 
